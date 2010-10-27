@@ -1,5 +1,5 @@
 (ns slim.test.core
-  (:use [slim_clj.core] :reload)
+  (:use [slim.core] :reload)
   (:use [clojure.test]))
 
 (deftest slim
@@ -13,7 +13,7 @@
     
   (is (= 
     (render-template "test/samples/basic_with_delimeter.slim.html") 
-    "<p>Lorem Ipsum Dolor Sit</p>"))
+    "<p>Lorem Ipsum Dolor Sit </p>"))
 
   (is (= 
     (render-template "test/samples/nested_tags.slim.html") 
@@ -34,5 +34,11 @@
   (is (= 
     (render-template "test/samples/embedded_clojure.slim.html") 
     "<h1>Hello, Chas</h1>"))
-  
+)
+
+
+(deftest slim-with_hiccup
+  (is (=
+    (render-template "test/samples/hiccup_integration.slim.html")
+    "<div><h1 class=\"heading cats\" id=\"garfield\">Hello World</h1></div>"))
 )

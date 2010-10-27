@@ -1,5 +1,5 @@
-(ns slim_clj.core
-(:use [clojure.contrib.duck-streams :only (read-lines)]))
+(ns slim.core
+  (:use [clojure.contrib.duck-streams :only (read-lines)]))
 
 (defstruct html-node :depth :interpreted_type :interpreted :selector :attributes :content)
 
@@ -58,5 +58,6 @@
           (str (opening-tag current) (content current) (write-html (rest data) (conj stack current)))))))))
     
 (defn render-template [template]
+  (use 'hiccup.core)
   (write-html (process-file template []) '())
 )
