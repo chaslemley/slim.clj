@@ -15,7 +15,7 @@ based on Andrew Stone's Slim : <http://github.com/stonean/slim>
         = (greeting "Slim.clj")
       p(id='foo' class='bar') Hello World
 
-####2. Use the render-html function to convert the file to html
+####2. Use the render-template function to convert the file to html
 
     user=> (use 'slim.core)
     nil
