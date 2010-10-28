@@ -1,7 +1,10 @@
 # slim.clj
 
 Simple Templating for Clojure
-based on Andrew Stone's Slim : <http://github.com/stonean/slim>
+[Slim]: http://github.com/stonean/slim  "http://github.com/stonean/slim"
+[Hiccup]: http://github.com/weavejester/hiccup "http://github.com/weavejester/hiccup"
+
+based on Andrew Stone's [Slim]
 
 ## Usage
 
@@ -15,7 +18,7 @@ based on Andrew Stone's Slim : <http://github.com/stonean/slim>
         = (greeting "Slim.clj")
       p(id='foo' class='bar') Hello World
 
-####2. Use the render-template function to convert the file to html
+####2. Use the render-html function to convert the file to html
 
     user=> (use 'slim.core)
     nil
@@ -23,15 +26,13 @@ based on Andrew Stone's Slim : <http://github.com/stonean/slim>
     user=> (render-template "views/template.html.slim")
     "<div><h1>Hello, Slim.clj</h1><p id='foo' class='bar'>Hello World</p></div>"
 
-####3. Slim.clj also includes integration with hiccup : <http://github.com/weavejester/hiccup>
+####3. Slim.clj also includes integration with [Hiccup]
 
     ; content of views/hiccup.html.slim
     div
       = (html [:h1#garfield.heading.cats "Hello World"])
-
-/
- 
-    user=> (render-template "views/hiccup.html.slim")
+<br />
+     user=> (render-template "views/hiccup.html.slim")
     "<div><h1 class=\"heading cats\" id=\"garfield\">Hello World</h1></div>"
 
 ## Installation
