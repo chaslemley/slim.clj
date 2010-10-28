@@ -7,6 +7,8 @@ Simple Templating for Clojure
     div
       p(id='foo' class='bar') Hello World
 
+
+
     user=> (use 'hiccup.core)
     nil
     user=> (render-template "views/template.html.slim")
