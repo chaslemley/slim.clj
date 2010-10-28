@@ -4,14 +4,17 @@ Simple Templating for Clojure
 
 ## Usage
 
-FIXME: write
+    div
+      p(id='foo' class='bar') Hello World
+
+    user=> (use 'hiccup.core)
+    nil
+    user=> (render-template "views/template.html.slim")
+    "<div><p id='foo' class='bar'>Hello World</p></div>"
 
 ## Installation
 
-FIXME: write
 
 ## License
-
-Copyright (C) 2010 Chas Lemley
 
 Distributed under the Eclipse Public License, the same as Clojure.
