@@ -39,7 +39,7 @@ based on Andrew Stone's [Slim]
 
 ### Leiningen
 
-    [slim "0.1.1"]
+    [slim "0.1.2"]
 
 ## License
 
