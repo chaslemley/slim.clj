@@ -2,3 +2,5 @@
 pom.xml
 lib
 classes
+.cake
+build

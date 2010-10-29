@@ -68,7 +68,8 @@
           (str (content current) " " (write-html (rest data) stack))
           (str (opening-tag current) (content current) (write-html (rest data) (conj stack current))))))))))
 
-(defn render-template [template]
+(defn render-template [template & data]
   (use 'hiccup.core)
-  (write-html (process-file template []) '())
-)
+  (intern *ns* 'locals (fn [s] (get (first data) s)))
+  
+  (write-html (process-file template []) '()))

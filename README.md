@@ -57,7 +57,7 @@ Produces
 
 ### Leiningen
 
-    [slim "0.1.2"]
+    [slim "0.1.3"]
 
 ## License
 
