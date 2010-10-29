@@ -8,7 +8,7 @@ based on Andrew Stone's [Slim]
 
 ## Usage
 
-####1. Create a slim template file 
+Create a slim template file 
 
     ; content of views/template.html.slim
     - (defn greeting [name] (str "Hello, " name))
@@ -18,7 +18,7 @@ based on Andrew Stone's [Slim]
         = (greeting "Slim.clj")
       p(id='foo' class='bar') Hello World
 
-####2. Use the render-html function to convert the file to html
+Use the render-html function to convert the file to html
 
     user=> (use 'slim.core)
     nil
@@ -26,14 +26,32 @@ based on Andrew Stone's [Slim]
     user=> (render-template "views/template.html.slim")
     "<div><h1>Hello, Slim.clj</h1><p id='foo' class='bar'>Hello World</p></div>"
 
-####3. Slim.clj also includes integration with [Hiccup]
+## Examples
+
+### Integration with [Hiccup]
 
     ; content of views/hiccup.html.slim
     div
       = (html [:h1#garfield.heading.cats "Hello World"])
-<br />
-     user=> (render-template "views/hiccup.html.slim")
+
+Produces
+
     "<div><h1 class=\"heading cats\" id=\"garfield\">Hello World</h1></div>"
+
+### Doctypes
+
+    ; HTML5
+    !!! html
+    ; strict
+    !!! strict
+    ; xml
+    !!! xml
+
+Produces
+
+    <!DOCTYPE HTML>
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+    <?xml version='1.0' encoding='utf-8' ?>
 
 ## Installation
 
