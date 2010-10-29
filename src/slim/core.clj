@@ -4,20 +4,22 @@
 (defstruct html-node :depth :interpreted_type :interpreted :selector :attributes :content)
 
 (defn- process-line [acc line]
-  (let [[full-text 
-         leading_whitespace 
+  (let [[full-text
+         directive
+         leading_whitespace
          interpreted
-         selector 
-         full_attributes 
-         attributes 
-         content] (re-find #"^([\s]*)([-=;|]?)([\w]*)([(](.*?)[)])?(.*)$" line)]
+         selector
+         full_attributes
+         attributes
+         content] (re-find #"^(!!!)?([\s]*)([-=;|]?)([\w]*)([(](.*?)[)])?(.*)$" line)]
     (if (or (= (.trim full-text) "") (= interpreted ";"))
       acc
-      (conj acc (struct-map html-node :depth (count leading_whitespace), 
+      (conj acc (struct-map html-node :depth (count leading_whitespace),
                                     :interpreted_type interpreted,
                                     :interpreted (or (= interpreted "=") (= interpreted "-")),
-                                    :selector selector, 
-                                    :attributes attributes, 
+                                    :directive? (= directive "!!!"),
+                                    :selector selector,
+                                    :attributes attributes,
                                     :content (.trim content))))))
 
 (defn- process-file [file-name line-accum]
@@ -39,9 +41,16 @@
 
 (defn- interpreted-clojure [node]
   (load-string (node :content)))
-  
+
 (defn- content [node]
   (if (= "" (node :content)) "" (str (node :content))))
+
+(defn- directive [node]
+  (cond
+    (= (node :selector) "strict") "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">"
+    (= (node :selector) "html")   "<!DOCTYPE HTML>"
+    (= (node :selector) "xml")    "<?xml version='1.0' encoding='utf-8' ?>"))
+
 
 (defn- write-html [data stack]
   (if (empty? data)
@@ -49,14 +58,16 @@
     (let [current (first data)]
     (if (<= (get current :depth -1) (get (first stack) :depth -2))
       (str (closing-tag (first stack)) (write-html data (rest stack)))
+      (if (current :directive?)
+      (str (directive current) (write-html (rest data) stack))
       (if (current :interpreted)
-        (if (= "=" (current :interpreted_type)) 
+        (if (= "=" (current :interpreted_type))
           (str (interpreted-clojure current) (write-html (rest data) stack))
           (do (interpreted-clojure current) (str (write-html (rest data) stack))))
         (if (= (current :interpreted_type) "|")
           (str (content current) " " (write-html (rest data) stack))
-          (str (opening-tag current) (content current) (write-html (rest data) (conj stack current)))))))))
-    
+          (str (opening-tag current) (content current) (write-html (rest data) (conj stack current))))))))))
+
 (defn render-template [template]
   (use 'hiccup.core)
   (write-html (process-file template []) '())
