@@ -1,6 +1,10 @@
+.lein-deps-sum
+.lein-failures
+target/*
 .DS_Store
 pom.xml
 lib
 classes
 .cake
 build
+*.jar
