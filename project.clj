@@ -1,4 +1,4 @@
-(defproject slim "0.1.5"
+(defproject devn/slim "0.1.5"
   :description "Simple HTML Templating for Clojure"
   :url "http://github.com/devn/slim.clj"
   :license {:name "Eclipse Public License"
