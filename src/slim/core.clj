@@ -38,25 +38,26 @@
   (if (nil? attr) "" (str " " attr)))
 
 (defn- opening-tag [node]
-  (if (contains? self-closing-tags (node :selector))
-    (str "<" (node :selector) (attributes (node :attributes)) " />")
-    (str "<" (node :selector) (attributes (node :attributes)) ">")))
+  (let [selector (node :selector)
+        self-closing (contains? self-closing-tags selector)]
+     (str "<" selector (attributes (node :attributes)) (if self-closing " />" ">"))))
 
 (defn- closing-tag [node]
-  (if (contains? self-closing-tags (node :selector)) "" (str "</" (node :selector) ">")))
+  (let [selector (node :selector)]
+    (if (contains? self-closing-tags selector) "" (str "</" selector ">"))))
 
 (defn- interpreted-clojure [node]
   (load-string (node :content)))
 
 (defn- content [node]
-  (if (= "" (node :content)) "" (str (node :content))))
+  (str (node :content)))
 
 (defn- directive [node]
-  (cond
-    (= (node :selector) "strict") "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">"
-    (= (node :selector) "html")   "<!DOCTYPE HTML>"
-    (= (node :selector) "xml")    "<?xml version='1.0' encoding='utf-8' ?>"))
-
+  (let [selector (node :selector)]
+    (cond
+      (= selector "strict") "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">"
+      (= selector "html")   "<!DOCTYPE HTML>"
+      (= selector "xml")    "<?xml version='1.0' encoding='utf-8' ?>")))
 
 (defn- write-html [data stack]
   (if (empty? data)
@@ -77,5 +78,4 @@
 (defn render-template [template & data]
   (use 'hiccup.core)
   (intern *ns* 'locals (fn [s] (get (first data) s)))
-
   (write-html (process-file template []) '()))
